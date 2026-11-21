@@ -36,7 +36,7 @@ _msc_resolve() {
     # converter is a different compiler and invalidates every cached shader.
     local pkg="$REPO_ROOT/research/GPTK/Metal Shader Converter 4.0 beta 2.pkg"
     local pkg_sha="1acc33c87ea663933df89721a998d066106685473020bcbe007cee7a16155734"
-    local ios_lib_sha="073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2"
+    local ios_lib_sha="0d1539d7158b3337607cef6702cdc228ec8ff4122f51d1f5643b72b6593516f1"
     local have cand d
 
     [[ -f "$vend/SHA256SUMS" ]] || { _msc_fail "missing $vend/SHA256SUMS"; return 1; }
