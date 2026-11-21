@@ -20,8 +20,8 @@ concurrency:
 
 jobs:
   build:
-    # madeira-bcd: runs only in the owner's repository; a fork's run is skipped.
-    if: github.repository == 'thebcd69/madeira-bcd'
+    # madeira-bcd: allow running in this fork's GitHub Actions.
+    if: github.repository == 'zahir-sky/bcd-games'
     runs-on: macos-15
     # contents: write only so the token can see DRAFT releases, which is where
     # the Metal Shader Converter installer is kept (drafts are not public).
@@ -2174,6 +2174,12 @@ jobs:
       # shipped kernelbase.dll is never rebuilt. Checked by "Check nonblocking I/O completion delivery".
       - name: Enable opt-in overlapped I/O completion checkpoints
         run: python3 tools/patch-wine-overlapped-system-apc.py wine
+
+      # madeira-bcd: env.MADEIRA_SMX_IO_TRACE = 1 (default off): one-request trace for the
+      # 32-bit SMX TLS read failure. It records owner/executor thread IDs, guest IOSB state,
+      # server completion, and APC drop/destruction without changing Wine's protocol or I/O.
+      - name: Apply the opt-in SMX socket I/O trace
+        run: python3 tools/patch-wine-smx-socket-io-trace.py wine
 
       # madeira-bcd: env.MADEIRA_WOA_RECHECK = 1 (default off): an infinite RtlWaitOnAddress in the 32-bit ntdll (the i386 farm's)
       # waits in one-second slices and returns when a waker removed its entry but the alert never came; the unix side keeps the
@@ -4666,6 +4672,10 @@ jobs:
 
       - name: Check nonblocking I/O completion delivery
         run: python3 tests/host/check-overlapped-system-apc.py
+
+      # madeira-bcd: env.MADEIRA_SMX_IO_TRACE (tools/patch-wine-smx-socket-io-trace.py).
+      - name: Check the SMX socket I/O trace patch
+        run: python3 tests/host/check-smx-socket-io-trace.py
 
       # madeira-bcd: env.MADEIRA_WOA_RECHECK (tools/patch-wine-woa-recheck.py).
       - name: Check woa-recheck
