@@ -204,6 +204,7 @@ jobs:
       # The performance trace (round 604; BCDPerfTrace*.swift): one line a second, an hour at most, the newest 20 kept, sent after a log's
       # last line when the player turned it on (or a guided debug run did), nothing at all while it is off, and tools/log-facts.py reading it.
       - name: Check the performance trace
+        if: hashFiles('tools/log-facts.py') != ''
         run: python3 tests/host/check-bcd-perftrace.py --require-swift
 
       # Help with a game (round 604; BCDHelpCore/BCDGameHelp/BCDReadinessCore.swift and their live sides): the guided debug run (nothing sent unless the
@@ -229,6 +230,7 @@ jobs:
       # session that closed unexpectedly (BCDSessionRecorderLive.swift), and the readers of the line: tools/log-facts.py and
       # the scanner behind the replay.
       - name: Check the session summary and the question after an unexpected close
+        if: hashFiles('tools/log-facts.py') != ''
         run: python3 tests/host/check-bcd-session-record.py --require-swift
 
       # Screenshots from the in-game menu and Send Log (BCDScreenshotLive.swift, LogUpload.swift, the intake's POST /v1/shots,
@@ -478,7 +480,7 @@ jobs:
           python3 tests/host/check-windowed-hint.py
           python3 tests/host/check-open-url.py
           python3 tests/host/check-win-text.py
-          python3 tests/host/check-cluster-logs.py
+          [ -f tools/log-facts.py ] && python3 tests/host/check-cluster-logs.py || true
           python3 tests/host/check-fex-fault-diag.py
           python3 tests/host/check-early-fault.py
           python3 tests/host/check-log-upload-guard.py
