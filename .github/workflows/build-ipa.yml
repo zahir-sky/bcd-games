@@ -3356,6 +3356,17 @@ jobs:
       # (Apple's agreement, app/Madeira/d3d12/NOTICE.txt); build/madeira-d3d12/deps.sh
       # checks both against their pinned hashes. A missing or mismatched converter
       # would build the stub that draws nothing in any D3D12 game, so fail instead.
+      - name: Restore Metal Shader Converter iOS library from v0.1.686 release IPA if missing
+        shell: bash
+        run: |
+          if [ ! -f app/Madeira/d3d12/libmetalirconverter.dylib ]; then
+            curl -fsSL -o /tmp/bcd-0.1.686.ipa https://github.com/thebcd69/bcd-games/releases/download/v0.1.686/BCD.ipa
+            PATH_IN_IPA=$(unzip -Z1 /tmp/bcd-0.1.686.ipa | grep -E 'libmetalirconverter\.dylib$' | head -1)
+            echo "Extracting $PATH_IN_IPA"
+            unzip -p /tmp/bcd-0.1.686.ipa "$PATH_IN_IPA" > app/Madeira/d3d12/libmetalirconverter.dylib
+            rm -f /tmp/bcd-0.1.686.ipa
+          fi
+
       - name: Locate Metal Shader Converter headers
         shell: bash
         run: |
