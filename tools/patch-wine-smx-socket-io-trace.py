@@ -610,7 +610,13 @@ def main(argv):
         wine / "dlls/ntdll/unix/socket.c",
         root / "build/wineserver/fd_ios.c",
     ]
-    already = all(MARKER in read(path) for path in targets)
+    helpers = [
+        (wine / "server/smx_socket_io_trace.h", SERVER_HELPER),
+        (wine / "dlls/ntdll/unix/smx_socket_io_trace.h", CLIENT_HELPER),
+    ]
+    already = all(MARKER in read(path) for path in targets) and all(
+        helper.is_file() and read(helper) == content for helper, content in helpers
+    )
     if already:
         print("SMX socket I/O trace: already applied (diagnostic only; enable with MADEIRA_SMX_IO_TRACE=1)")
         return 0
