@@ -177,24 +177,24 @@ def main():
             "wine/server/async.c": (
                 '"server-complete"', "async_get_smx_io_op",
                 "async_get_smx_io_tid", "async_get_smx_io_iosb",
-                "async_get_smx_io_tid( &async->obj ), current->id",
+                "async_get_smx_io_tid( &async->obj ), current ? current->id : 0",
             ),
             "wine/server/thread.c": (
                 '"apc-requeue"', '"apc-destroy"', '"apc-result-returned"',
                 "apc->smx_dropped", "apc->result.type == APC_ASYNC_IO",
-                "async_get_smx_io_tid( apc->owner )", "current->id",
+                "async_get_smx_io_tid( apc->owner )", "current ? current->id : 0",
             ),
             "wine/server/sock.c": (
                 '"RECV"', '"server-request"',
-                "async_get_smx_io_async_tid( async ), current->id",
+                "async_get_smx_io_async_tid( async ), current ? current->id : 0",
             ),
             "wine/server/fd.c": (
                 '"AFD_POLL"', '"server-request"',
-                "async_get_smx_io_async_tid( async ), current->id",
+                "async_get_smx_io_async_tid( async ), current ? current->id : 0",
             ),
             "build/wineserver/fd_ios.c": (
                 '"AFD_POLL"', '"server-request"',
-                "async_get_smx_io_async_tid( async ), current->id",
+                "async_get_smx_io_async_tid( async ), current ? current->id : 0",
             ),
             "wine/dlls/ntdll/unix/file.c": (
                 '"AFD_POLL"', '"guest-request"', '"guest-result"',
