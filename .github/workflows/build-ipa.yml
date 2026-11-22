@@ -2281,6 +2281,10 @@ jobs:
           python3 tests/host/check-wine-dns-refuse-crash.py || true
           python3 tools/patch-wine-dns-refuse-crash.py wine/dlls/ws2_32/unixlib.c
 
+      # Honor Wine's C:\Windows\System32\drivers\etc\hosts (and MADEIRA_HOSTS) in iOS getaddrinfo().
+      - name: Patch wine iOS DNS wrapper to honor Windows hosts file
+        run: python3 tools/patch-wine-ios-hosts.py wine/dlls/ws2_32/unixlib.c
+
       # madeira-bcd: D3DXCreateVolumeTextureFromResourceExA/W were stubs that aborted the program
       # (GTA IV, build 574); implemented like D3DXCreateTextureFromResourceExW.
       - name: Patch wine d3dx9 volume textures from resources
