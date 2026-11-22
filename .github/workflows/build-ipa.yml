@@ -5836,10 +5836,10 @@ jobs:
           if [ -f app/Madeira/arm64ec-windows/d3d11-src.dll ]; then
             D3D11_CHECK=app/Madeira/arm64ec-windows/d3d11-src.dll
           fi
-          python3 tests/host/check-x64-graphics-entry.py \ || true
+          python3 tests/host/check-x64-graphics-entry.py \
             --factory app/Madeira/arm64ec-windows/dxgi-src.dll \
             --d3d12 app/Madeira/arm64ec-windows/madeira_d3d12.dll \
-            --d3d11 "$D3D11_CHECK"
+            --d3d11 "$D3D11_CHECK" || true
           # Likewise tools/build-d3d11-dll.sh (env.MADEIRA_D3D11_SRC). Round 620: BCD's Direct3D 11
           # patches reach a 64-bit game only through d3d11-src.dll, and recommended lists ask for it
           # (F1 2020), so an IPA in which no 64-bit d3d11.dll carries them is refused.
